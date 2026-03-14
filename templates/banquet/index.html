@@ -145,6 +145,211 @@
             0%, 100% { transform: translateX(-50%) translateY(0);   }
             50%       { transform: translateX(-50%) translateY(7px); }
         }
+
+        /* ═══════════════════════════════════════════
+           INVITATION SCROLL SECTION
+           ═══════════════════════════════════════════ */
+        .invitation-section {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: #f0ece3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── Lacy invitation background ── */
+        .lacy-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .lacy-card {
+            position: relative;
+            width: min(680px, 88vw);
+            padding: 60px 56px;
+            text-align: center;
+            /* Lacy border via layered box-shadows + outline trick */
+            border: 1px solid rgba(160,140,120,0.35);
+            outline: 4px double rgba(160,140,120,0.22);
+            outline-offset: 8px;
+            background:
+                radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,252,246,0.92) 0%, rgba(240,236,227,0.70) 100%);
+            box-shadow:
+                0 0 0 12px rgba(240,236,227,0.5),
+                0 0 0 13px rgba(160,140,120,0.18),
+                0 8px 60px rgba(80,60,40,0.10);
+        }
+
+        /* Corner ornaments */
+        .lacy-card::before,
+        .lacy-card::after {
+            content: '✦';
+            position: absolute;
+            font-size: 11px;
+            color: #c0b4a4;
+            line-height: 1;
+        }
+        .lacy-card::before { top: 14px; left: 18px; }
+        .lacy-card::after  { bottom: 14px; right: 18px; }
+
+        .lacy-corner-tr,
+        .lacy-corner-bl {
+            position: absolute;
+            font-size: 11px;
+            color: #c0b4a4;
+            line-height: 1;
+        }
+        .lacy-corner-tr { top: 14px; right: 18px; }
+        .lacy-corner-bl { bottom: 14px; left: 18px; }
+
+        .lacy-eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: #b0a090;
+            margin-bottom: 14px;
+        }
+
+        .lacy-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(52px, 8vw, 88px);
+            color: #4a6e8a;
+            line-height: 1.05;
+            margin-bottom: 6px;
+        }
+
+        .lacy-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .lacy-divider span {
+            display: block;
+            width: 80px;
+            height: 0.7px;
+            background: #c0b4a4;
+        }
+        .lacy-divider em {
+            font-size: 10px;
+            color: #c0b4a4;
+            font-style: normal;
+        }
+
+        .lacy-subtitle {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(14px, 1.8vw, 18px);
+            font-style: italic;
+            color: #7a6a58;
+            letter-spacing: 0.04em;
+            line-height: 1.8;
+        }
+
+        /* ── Floating elements that animate on scroll ── */
+        .float-elements {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* shared scroll-reveal state */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(70px);
+            transition:
+                opacity  0.9s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+            pointer-events: auto;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Polaroid ── */
+        .polaroid {
+            position: absolute;
+            left: clamp(20px, 6vw, 100px);
+            top: 50%;
+            transform: translateY(calc(-50% + 70px)) rotate(-4deg);
+            width: clamp(140px, 18vw, 220px);
+            background: #fff;
+            padding: 10px 10px 34px;
+            box-shadow:
+                0 6px 24px rgba(60,40,20,0.18),
+                0 2px  6px rgba(60,40,20,0.10);
+            transition:
+                opacity  0.9s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .polaroid.visible {
+            opacity: 1;
+            transform: translateY(-50%) rotate(-4deg);
+        }
+
+        .polaroid-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background:
+                linear-gradient(135deg,
+                    #d4c8bc 0%, #e8ddd4 40%, #c8bdb4 70%, #ddd4c8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .polaroid-photo svg {
+            width: 60%;
+            opacity: 0.4;
+        }
+        .polaroid-caption {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 11px;
+            font-style: italic;
+            color: #8a7a6a;
+            text-align: center;
+            margin-top: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Digital camera ── */
+        .camera {
+            position: absolute;
+            right: clamp(20px, 6vw, 100px);
+            top: 50%;
+            transform: translateY(calc(-50% + 70px)) rotate(6deg);
+            width: clamp(100px, 14vw, 180px);
+            transition:
+                opacity  0.9s cubic-bezier(0.25, 0.8, 0.25, 1) 0.18s,
+                transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) 0.18s;
+        }
+        .camera.visible {
+            opacity: 1;
+            transform: translateY(-50%) rotate(6deg);
+        }
+
+        /* ── Camera SVG placeholder ── */
+        .camera-svg-wrap {
+            width: 100%;
+            filter:
+                drop-shadow(6px 10px 20px rgba(60,40,20,0.22))
+                drop-shadow(1px  3px  6px rgba(60,40,20,0.12));
+        }
+
+        /* lacy-card parallax scale on scroll */
+        .lacy-card {
+            transition: transform 0.1s linear;
+        }
     </style>
 </head>
 <body>
@@ -294,6 +499,105 @@
 
 </section><!-- /#hero -->
 
+
+<!-- ═══════════════════════════════════════════════════════
+     INVITATION SCROLL SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="invitation-section" id="invitation">
+
+    <!-- Background lacy invitation card -->
+    <div class="lacy-bg">
+        <div class="lacy-card scroll-reveal" id="lacyCard">
+            <span class="lacy-corner-tr">✦</span>
+            <span class="lacy-corner-bl">✦</span>
+
+            <p class="lacy-eyebrow">SASE Annual Banquet &nbsp;·&nbsp; 2026</p>
+
+            <h2 class="lacy-title">You Are Invited</h2>
+
+            <div class="lacy-divider">
+                <span></span>
+                <em>❧</em>
+                <span></span>
+            </div>
+
+            <p class="lacy-subtitle">
+                Join us for an evening of celebration<br>
+                at <em>Friendship Gardens</em>
+            </p>
+
+            <div class="lacy-divider" style="margin-top:20px;">
+                <span></span>
+                <em>✦</em>
+                <span></span>
+            </div>
+
+            <p class="lacy-subtitle" style="font-size:clamp(12px,1.4vw,15px); margin-top:4px;">
+                April 18<sup style="font-size:0.65em">th</sup>, 2026 &nbsp;·&nbsp; 5–8 PM<br>
+                Student Pavilion · Senita Ballroom BC
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating elements layer -->
+    <div class="float-elements">
+
+        <!-- Polaroid (left) — swap .polaroid-photo contents with your SVG -->
+        <div class="polaroid scroll-reveal" id="polaroid">
+            <div class="polaroid-photo">
+                <!-- PLACEHOLDER: replace with <img> or your SVG -->
+                <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="12" width="44" height="36" rx="2" stroke="#a09080" stroke-width="1.5"/>
+                    <circle cx="30" cy="28" r="10" stroke="#a09080" stroke-width="1.5"/>
+                    <circle cx="30" cy="28" r="4" fill="#a09080" fill-opacity="0.3"/>
+                    <path d="M8 38 L20 26 L30 34 L40 22 L52 34" stroke="#a09080" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
+            <p class="polaroid-caption">/ a night to remember</p>
+        </div>
+
+        <!-- Digital camera (right) — replace inner SVG with yours -->
+        <div class="camera scroll-reveal" id="camera">
+            <div class="camera-svg-wrap">
+                <!-- PLACEHOLDER: replace with your digital camera SVG -->
+                <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Body -->
+                    <rect x="10" y="30" width="180" height="110" rx="14"
+                          fill="#d8d0c4" stroke="#b0a494" stroke-width="1.5"/>
+                    <!-- Grip -->
+                    <rect x="10" y="40" width="36" height="80" rx="10"
+                          fill="#c8bfb4" stroke="#b0a494" stroke-width="1"/>
+                    <!-- Lens ring -->
+                    <circle cx="110" cy="90" r="42"
+                            fill="#b8b0a8" stroke="#a09490" stroke-width="2"/>
+                    <circle cx="110" cy="90" r="34"
+                            fill="#2a2420" stroke="#a09490" stroke-width="1"/>
+                    <circle cx="110" cy="90" r="22"
+                            fill="#1a1210" stroke="#504840" stroke-width="1"/>
+                    <!-- Lens reflection -->
+                    <ellipse cx="103" cy="82" rx="7" ry="5"
+                             fill="white" fill-opacity="0.12" transform="rotate(-25 103 82)"/>
+                    <!-- Shutter button -->
+                    <ellipse cx="56" cy="32" rx="9" ry="6"
+                             fill="#c0b8b0" stroke="#a09490" stroke-width="1"/>
+                    <!-- Flash -->
+                    <rect x="54" y="8" width="28" height="18" rx="4"
+                          fill="#d0c8bc" stroke="#b0a494" stroke-width="1"/>
+                    <!-- Viewfinder -->
+                    <rect x="148" y="38" width="28" height="18" rx="3"
+                          fill="#2a2420" stroke="#a09490" stroke-width="1"/>
+                    <!-- Brand text -->
+                    <text x="58" y="128" font-family="Georgia,serif" font-size="9"
+                          fill="#7a7068" letter-spacing="2">SASE · 2026</text>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+
+</section><!-- /#invitation -->
+
+
 <script>
 /*
  * ENVELOPE CARD INTERACTIVITY
@@ -347,6 +651,68 @@
         shine.setAttribute('cx', '50%');
         shine.setAttribute('cy', '50%');
     });
+}());
+
+/*
+ * INVITATION SECTION — SCROLL REVEAL + PARALLAX
+ * ───────────────────────────────────────────────────────────
+ * • IntersectionObserver fires .visible on each .scroll-reveal
+ * • Polaroid & camera have staggered delays via CSS transition-delay
+ * • Lacy card gets a subtle parallax scale as the section scrolls
+ */
+(function () {
+    /* ─ Scroll-reveal via IntersectionObserver ─ */
+    const revealEls = document.querySelectorAll('.scroll-reveal');
+
+    /* Stagger delays per element */
+    const delays = {
+        lacyCard: '0s',
+        polaroid: '0.18s',
+        camera:   '0.36s',
+    };
+    revealEls.forEach(function (el) {
+        const d = delays[el.id] || '0s';
+        el.style.transitionDelay = d;
+    });
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                /* keep visible once shown */
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach(function (el) { observer.observe(el); });
+
+    /* ─ Smooth scroll for the hero scroll-hint arrow ─ */
+    document.querySelector('.scroll-hint').addEventListener('click', function () {
+        document.getElementById('invitation').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.querySelector('.scroll-hint').style.cursor = 'pointer';
+
+    /* ─ Lacy card subtle parallax scale on scroll ─ */
+    const invSection  = document.getElementById('invitation');
+    const lacyCardEl  = document.getElementById('lacyCard');
+
+    function onScroll () {
+        if (!invSection || !lacyCardEl) return;
+        const rect = invSection.getBoundingClientRect();
+        const vh   = window.innerHeight;
+
+        /* progress 0 (section entering from bottom) → 1 (section leaving top) */
+        const progress = 1 - (rect.top + rect.height) / (vh + rect.height);
+        const clamped  = Math.max(0, Math.min(1, progress));
+
+        /* scale from 0.92 → 1.0 */
+        const scale = 0.92 + clamped * 0.08;
+        lacyCardEl.style.transform = 'scale(' + scale.toFixed(4) + ')';
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 }());
 </script>
 
