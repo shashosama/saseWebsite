@@ -4,315 +4,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Annual Banquet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>SASE Annual Banquet 2026 — Friendship Gardens</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap"
+          rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #e8eba8;
+            background: #f0ece3;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════
+           HERO
+           ═══════════════════════════ */
+        .hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        /* ─── Banner wrapper ─── */
-        .banner-wrapper {
-            width: 100%;
-            max-width: 1200px;
+            justify-content: center;
+            padding: 48px 24px 80px;
             position: relative;
         }
 
-        .banner-wrapper > svg {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        /* ─── "Annual Banquet" text ─── */
-        .text-bg {
+        /* Subtle radial depth on background */
+        .hero::before {
+            content: '';
             position: absolute;
-            left: 4%;
-            top: 36%;
-            width: 20%;
-            height: 28%;
-            background: rgba(180, 210, 185, 0.22);
-            border-radius: 4px;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 55% at 68% 48%, rgba(160,190,215,0.13) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 45% at 28% 75%, rgba(190,175,155,0.10) 0%, transparent 60%);
             pointer-events: none;
         }
 
-        .text-overlay {
-            position: absolute;
-            left: 6%;
-            top: 50%;
-            transform: translateY(-50%);
+        /* ── Heading ── */
+        .hero-heading {
+            text-align: center;
+            margin-bottom: 0px;
+            z-index: 5;
+        }
+        .hero-heading h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(13px, 2.2vw, 22px);
+            font-weight: 400;
+            color: #6a5a48;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+        .hero-heading .tagline {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(26px, 4.8vw, 56px);
-            color: #2a7a7a;
-            line-height: 1.25;
-            pointer-events: none;
-            z-index: 10;
+            font-size: clamp(34px, 5.5vw, 58px);
+            color: #4a6e8a;
+            margin-top: 2px;
+            line-height: 1.1;
         }
 
-        /* ─── Envelope card — the 3-D floating element ─── */
+        /* ═══════════════════════════
+           ENVELOPE CARD — 3-D + shine
+           ═══════════════════════════ */
         .envelope-card {
-            position: absolute;
+            position: relative;
+            width: 100%;
+            max-width: 680px;
+            z-index: 10;
 
-            /* Centre the card over the right portion of the banner */
-            left: 42%;
-            top: 50%;
-            width: 52%;
+            /* Resting tilt */
+            transform: perspective(1100px) rotateX(5deg) rotateY(-8deg) rotateZ(-1deg);
 
-            /* The transform-origin must sit at the visual centre of the card */
-            transform-origin: center center;
+            /* Floating shadow */
+            filter:
+                drop-shadow(18px 26px 40px rgba(60, 40, 20, 0.22))
+                drop-shadow(4px  8px  14px rgba(60, 40, 20, 0.13));
 
-            /*
-             * THE 3-D EFFECT:
-             *   perspective()  — creates the depth field (lower = more dramatic)
-             *   rotateX()      — tilt top edge away from viewer
-             *   rotateY()      — swing left edge toward viewer
-             *   rotateZ()      — slight clockwise lean
-             */
-            transform: translateY(-50%)
-                       perspective(900px)
-                       rotateX(6deg)
-                       rotateY(-10deg)
-                       rotateZ(-2deg);
+            transition:
+                transform 0.55s cubic-bezier(0.25, 0.8, 0.25, 1),
+                filter    0.55s ease;
 
-            /* Shadow cast by the "lifted" card */
-            filter: drop-shadow(12px 18px 28px rgba(80, 60, 20, 0.28))
-                    drop-shadow(4px 6px 10px rgba(80, 60, 20, 0.15));
-
-            /* Smooth un-tilt on hover */
-            transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1),
-                        filter 0.45s ease;
             cursor: pointer;
-            z-index: 20;
-        }
-
-        /* Hover: card flattens and lifts slightly */
-        .envelope-card:hover {
-            transform: translateY(-54%)
-                       perspective(900px)
-                       rotateX(0deg)
-                       rotateY(0deg)
-                       rotateZ(0deg);
-            filter: drop-shadow(0px 28px 40px rgba(80, 60, 20, 0.30))
-                    drop-shadow(0px 8px 14px rgba(80, 60, 20, 0.18));
         }
 
         .envelope-card svg {
             display: block;
             width: 100%;
             height: auto;
-            overflow: visible; /* branches / flap may bleed outside card rect */
+            overflow: visible;
+        }
+
+        /* ── Sweep-shine animation ── */
+        @keyframes card-sweep {
+            from { transform: skewX(-18deg) translateX(-800px); }
+            to   { transform: skewX(-18deg) translateX(1600px); }
+        }
+        .sweep-rect {
+            transform: skewX(-18deg) translateX(-800px);
+        }
+        .envelope-card:hover .sweep-rect {
+            animation: card-sweep 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 0.04s;
+        }
+
+        /* ── RSVP button ── */
+        .rsvp-btn {
+            display: inline-block;
+            margin-top: 42px;
+            padding: 13px 46px;
+            background: transparent;
+            border: 1.5px solid #4a6e8a;
+            color: #4a6e8a;
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 2px;
+            z-index: 5;
+            transition: background 0.3s, color 0.3s;
+        }
+        .rsvp-btn:hover {
+            background: #4a6e8a;
+            color: #fff;
+        }
+
+        /* ── Scroll hint ── */
+        .scroll-hint {
+            position: absolute;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            color: #b0a090;
+            text-transform: uppercase;
+            animation: bob 2.2s ease-in-out infinite;
+        }
+        @keyframes bob {
+            0%, 100% { transform: translateX(-50%) translateY(0);   }
+            50%       { transform: translateX(-50%) translateY(7px); }
+        }
+
+        /* ═══════════════════════════
+           INVITED SECTION
+           Elements are visible from the start. As the user scrolls through
+           the section, BG layer (lacy card) drifts slowly; FG layer
+           (polaroid + camera) moves faster — pure depth parallax.
+           ═══════════════════════════ */
+        .invited-section {
+            position: relative;
+            min-height: 180vh;
+        }
+
+        .invited-inner {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #f0ece3;
+        }
+
+        .invited-inner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 55% 50% at 32% 58%, rgba(190,175,155,0.10) 0%, transparent 65%),
+                radial-gradient(ellipse 45% 50% at 72% 38%, rgba(160,190,215,0.09) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* ── Watermark ── */
+        .invited-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(64px, 12vw, 144px);
+            color: rgba(74, 110, 138, 0.07);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        /* ── Lacy invitation card ── */
+        .lacy-card {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate3d(-60%, -50%, 0);
+            width: clamp(230px, 27vw, 350px);
+            z-index: 3;
+            will-change: transform;
+            filter: drop-shadow(0 22px 48px rgba(60, 40, 20, 0.16))
+                    drop-shadow(0 4px 12px rgba(60, 40, 20, 0.10));
+        }
+        .lacy-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ── Polaroid ── */
+        .polaroid {
+            position: absolute;
+            left: 9%;
+            top: 50%;
+            transform: translate3d(0, -46%, 0) rotate(-5deg);
+            will-change: transform;
+            width: clamp(170px, 20vw, 260px);
+            background: #fefdf9;
+            padding: 8px 8px 28px;
+            box-shadow:
+                3px 6px 26px rgba(60, 40, 20, 0.18),
+                0 0 0 1px rgba(200, 192, 180, 0.22);
+            z-index: 4;
+        }
+        .polaroid-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(145deg, #c4d2dc 0%, #b4c4d2 50%, #a4b8c8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .polaroid-photo::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 55%);
+        }
+        .polaroid-cap {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 10px;
+            font-style: italic;
+            color: #9a8a78;
+            text-align: center;
+            margin-top: 9px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Digital Camera ── */
+        .camera-wrap {
+            position: absolute;
+            right: 9%;
+            top: 46%;
+            transform: translate3d(0, -50%, 0) rotate(5deg);
+            will-change: transform;
+            width: clamp(160px, 22vw, 300px);
+            z-index: 4;
+        }
+        .camera-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(4px 10px 24px rgba(60, 40, 20, 0.14));
+        }
+
+        /* ── Responsive: stack on small screens ── */
+        @media (max-width: 640px) {
+            .lacy-card   { left: 50%; width: 78vw; }
+            .polaroid    { left: 5%; top: 30%; }
+            .camera-wrap { right: 4%; top: 68%; }
         }
     </style>
 </head>
 <body>
-<div class="banner-wrapper">
 
-    <!-- ════════════════════════════════════════════
-         LAYER 1 — background SVG (blossoms + text bg)
-         ════════════════════════════════════════════ -->
-    <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg"
-         preserveAspectRatio="xMidYMid meet">
-        <defs>
-            <!-- Cherry-blossom symbol, centred at origin -->
-            <g id="blossom">
-                <path d="M0,0 C-8,-3 -9,-14 -4,-19 Q-1,-23 0,-21 Q1,-23 4,-19 C9,-14 8,-3 0,0Z"
-                      fill="#f4b8c8" stroke="#e090a8" stroke-width="0.4" transform="rotate(0)"/>
-                <path d="M0,0 C-8,-3 -9,-14 -4,-19 Q-1,-23 0,-21 Q1,-23 4,-19 C9,-14 8,-3 0,0Z"
-                      fill="#f0aec2" stroke="#e090a8" stroke-width="0.4" transform="rotate(72)"/>
-                <path d="M0,0 C-8,-3 -9,-14 -4,-19 Q-1,-23 0,-21 Q1,-23 4,-19 C9,-14 8,-3 0,0Z"
-                      fill="#f8c8d4" stroke="#e090a8" stroke-width="0.4" transform="rotate(144)"/>
-                <path d="M0,0 C-8,-3 -9,-14 -4,-19 Q-1,-23 0,-21 Q1,-23 4,-19 C9,-14 8,-3 0,0Z"
-                      fill="#f4b8c8" stroke="#e090a8" stroke-width="0.4" transform="rotate(216)"/>
-                <path d="M0,0 C-8,-3 -9,-14 -4,-19 Q-1,-23 0,-21 Q1,-23 4,-19 C9,-14 8,-3 0,0Z"
-                      fill="#f0b4c2" stroke="#e090a8" stroke-width="0.4" transform="rotate(288)"/>
-                <circle r="4.5" fill="#f090a8"/>
-                <line x1="0"    y1="-4.5" x2="0"    y2="-10"  stroke="#c04860" stroke-width="0.7"/>
-                <circle cx="0"    cy="-10"  r="1.2" fill="#c04860"/>
-                <line x1="4.3"  y1="-1.4" x2="9.5"  y2="-3.1" stroke="#c04860" stroke-width="0.7"/>
-                <circle cx="9.5"  cy="-3.1" r="1.2" fill="#c04860"/>
-                <line x1="2.6"  y1="3.6"  x2="5.9"  y2="8"    stroke="#c04860" stroke-width="0.7"/>
-                <circle cx="5.9"  cy="8"    r="1.2" fill="#c04860"/>
-                <line x1="-2.6" y1="3.6"  x2="-5.9" y2="8"    stroke="#c04860" stroke-width="0.7"/>
-                <circle cx="-5.9" cy="8"    r="1.2" fill="#c04860"/>
-                <line x1="-4.3" y1="-1.4" x2="-9.5" y2="-3.1" stroke="#c04860" stroke-width="0.7"/>
-                <circle cx="-9.5" cy="-3.1" r="1.2" fill="#c04860"/>
-            </g>
-        </defs>
+<!-- ═══════════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
 
-        <!-- Background fill -->
-        <rect width="900" height="360" fill="#e8eba8"/>
+    <div class="hero-heading">
+        <h1>SASE Annual Banquet &nbsp;·&nbsp; 2026</h1>
+        <p class="tagline">Friendship Gardens</p>
+    </div>
 
-        <!-- Cherry blossoms — TOP RIGHT -->
-        <g stroke="#7a3010" stroke-width="1.2" fill="none" stroke-linecap="round">
-            <path d="M900,0  C875,15  855,35  840,55  C825,75  810,85  790,95"/>
-            <path d="M900,22 C875,36  858,54  845,70  C835,82  820,90  808,97"/>
-            <path d="M855,40 C870,30  888,18  900,8"/>
-            <path d="M840,57 C850,42  862,28  872,14"/>
-            <path d="M790,95  C778,113 766,130 752,142"/>
-            <path d="M790,95  C802,112 814,124 822,140"/>
-            <path d="M752,142 C740,154 729,164 718,174"/>
-        </g>
-        <use href="#blossom" transform="translate(847,33)  scale(1.2)"/>
-        <use href="#blossom" transform="translate(875,54)  scale(1.0)"/>
-        <use href="#blossom" transform="translate(818,60)  scale(1.1)"/>
-        <use href="#blossom" transform="translate(854,78)  scale(0.9)"/>
-        <use href="#blossom" transform="translate(897,70)  scale(0.85)"/>
-        <use href="#blossom" transform="translate(828,90)  scale(1.0)"/>
-        <use href="#blossom" transform="translate(812,110) scale(0.9)"/>
-        <use href="#blossom" transform="translate(770,127) scale(1.1)"/>
-        <use href="#blossom" transform="translate(800,134) scale(0.85)"/>
-        <use href="#blossom" transform="translate(750,150) scale(0.9)"/>
-        <use href="#blossom" transform="translate(722,170) scale(1.0)"/>
-        <circle cx="838" cy="48" r="4"   fill="#f0b0c0" opacity="0.85"/>
-        <circle cx="864" cy="38" r="3"   fill="#f8c8d0" opacity="0.80"/>
-        <circle cx="810" cy="80" r="3.5" fill="#f0b0c0" opacity="0.80"/>
-
-        <!-- Cherry blossoms — BOTTOM LEFT -->
-        <g stroke="#7a3010" stroke-width="1.2" fill="none" stroke-linecap="round">
-            <path d="M0,360 C18,338 40,318 62,300 C82,284 108,268 132,255"/>
-            <path d="M0,344 C26,322 52,305 78,292 C98,282 118,272 138,265"/>
-            <path d="M42,314 C30,292 22,270 24,250"/>
-            <path d="M62,300 C48,282 38,260 40,240"/>
-            <path d="M132,255 C144,238 157,224 170,212"/>
-            <path d="M132,255 C118,238 108,220 112,204"/>
-            <path d="M102,277 C92,258 88,238 90,222"/>
-        </g>
-        <use href="#blossom" transform="translate(30,340)  scale(1.2)"/>
-        <use href="#blossom" transform="translate(57,320)  scale(1.0)"/>
-        <use href="#blossom" transform="translate(18,308)  scale(0.9)"/>
-        <use href="#blossom" transform="translate(80,300)  scale(1.1)"/>
-        <use href="#blossom" transform="translate(50,290)  scale(0.9)"/>
-        <use href="#blossom" transform="translate(112,274) scale(1.0)"/>
-        <use href="#blossom" transform="translate(82,264)  scale(0.85)"/>
-        <use href="#blossom" transform="translate(140,260) scale(1.0)"/>
-        <use href="#blossom" transform="translate(124,244) scale(0.9)"/>
-        <use href="#blossom" transform="translate(158,227) scale(0.95)"/>
-        <use href="#blossom" transform="translate(170,212) scale(0.85)"/>
-        <use href="#blossom" transform="translate(97,284)  scale(0.8)"/>
-        <circle cx="44"  cy="304" r="4"   fill="#f0b0c0" opacity="0.85"/>
-        <circle cx="67"  cy="287" r="3"   fill="#f8c8d0" opacity="0.80"/>
-        <circle cx="104" cy="260" r="3.5" fill="#f0b0c0" opacity="0.80"/>
-        <circle cx="148" cy="242" r="3"   fill="#f8c8d0" opacity="0.75"/>
-    </svg>
-
-    <!-- ════════════════════════════════════════════
-         LAYER 2 — "Annual Banquet" text
-         ════════════════════════════════════════════ -->
-    <div class="text-bg"></div>
-    <div class="text-overlay">Annual<br>Banquet</div>
-
-    <!-- ════════════════════════════════════════════
-         LAYER 3 — 3-D ENVELOPE CARD
-         The CSS `transform: perspective() rotateX() rotateY() rotateZ()`
-         on this div is what creates the floating-ticket illusion.
-         ════════════════════════════════════════════ -->
-    <div class="envelope-card">
+    <!-- ─── 3-D Shiny Envelope Card ─── -->
+    <div class="envelope-card" id="envelopeCard">
         <!--
-            This SVG contains only the envelope.
-            overflow="visible" lets the open flap triangle and branch
-            tips bleed outside the SVG bounding box naturally.
-            viewBox "0 0 460 300":
-              • envelope body  : (20, 90) → (440, 285)
-              • flap apex      : (230, 8)
-              • orchid centre  : ~(230, 175)
-              • branch         : y ≈ 258, x from -50 to 510  (overflows)
+            Card SVG 720 × 720 (square to match the user's 1024×1024 envelope art).
+            The artwork fills the card; text + shine layers float above.
         -->
-        <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg"
-             overflow="visible">
+        <svg viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink" overflow="visible">
+            <defs>
 
-            <!-- ── Solid cream background (gives the card its body) ── -->
-            <rect x="20" y="90" width="420" height="195" rx="3"
-                  fill="#faf7f0" stroke="#a0a0d0" stroke-width="1.4"/>
+                <!-- Mouse-tracking radial gloss -->
+                <radialGradient id="shine-radial" cx="50%" cy="50%" r="55%"
+                                gradientUnits="objectBoundingBox">
+                    <stop offset="0%"   stop-color="#fffff5" stop-opacity="0.55"/>
+                    <stop offset="38%"  stop-color="#fffff5" stop-opacity="0.16"/>
+                    <stop offset="100%" stop-color="#fffff5" stop-opacity="0"/>
+                </radialGradient>
 
-            <!-- ── Open flap (triangle above body) ── -->
-            <polygon points="20,90 230,8 440,90"
-                     fill="#f5f2eb" stroke="#a0a0d0" stroke-width="1.4"/>
+                <!-- Diagonal sweep band -->
+                <linearGradient id="sweep-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="white" stop-opacity="0"/>
+                    <stop offset="43%"  stop-color="white" stop-opacity="0"/>
+                    <stop offset="50%"  stop-color="white" stop-opacity="0.65"/>
+                    <stop offset="57%"  stop-color="white" stop-opacity="0"/>
+                    <stop offset="100%" stop-color="white" stop-opacity="0"/>
+                </linearGradient>
 
-            <!-- ── Bottom fold V ── -->
-            <line x1="20"  y1="285" x2="230" y2="205" stroke="#a0a0d0" stroke-width="1.1"/>
-            <line x1="440" y1="285" x2="230" y2="205" stroke="#a0a0d0" stroke-width="1.1"/>
+                <!-- Static diagonal gloss (always-on laminate sheen) -->
+                <linearGradient id="gloss-static" x1="15%" y1="0%" x2="72%" y2="100%">
+                    <stop offset="0%"   stop-color="white" stop-opacity="0.42"/>
+                    <stop offset="30%"  stop-color="white" stop-opacity="0.16"/>
+                    <stop offset="50%"  stop-color="white" stop-opacity="0.04"/>
+                    <stop offset="100%" stop-color="black" stop-opacity="0.06"/>
+                </linearGradient>
 
-            <!-- ── Orchid / lily sketch ── -->
-            <g stroke="#8B1800" stroke-width="1.7" fill="none"
-               stroke-linecap="round" stroke-linejoin="round">
-                <!-- Stem -->
-                <path d="M230,200 C228,186 229,172 227,158 C226,144 225,130 226,116 C226,108 227,100 226,92"/>
-                <!-- Left outer petal -->
-                <path d="M226,126 C208,118 197,106 192,95 C187,84 189,76 193,72
-                          C200,77 204,88 210,100 C216,113 222,121 225,126"/>
-                <!-- Right outer petal -->
-                <path d="M228,126 C246,118 257,106 262,95 C267,84 265,76 261,72
-                          C254,77 250,88 244,100 C238,113 232,121 230,126"/>
-                <!-- Centre top petal -->
-                <path d="M228,122 C221,107 222,92 224,80 C225,72 227,67 229,66
-                          C231,67 233,72 234,80 C236,92 237,107 230,122"/>
-                <!-- Left leaf -->
-                <path d="M228,162 C212,151 200,137 192,123 C186,112 186,103 190,97"/>
-                <!-- Right leaf -->
-                <path d="M230,164 C246,153 258,139 266,125 C272,114 272,105 268,99"/>
-                <!-- Petal veins -->
-                <path d="M225,118 C218,106 216,94 218,84"  stroke-width="0.9" stroke="#a02000"/>
-                <path d="M229,118 C229,104 229,92  228,82"  stroke-width="0.9" stroke="#a02000"/>
-                <path d="M232,118 C239,106 241,94  239,84"  stroke-width="0.9" stroke="#a02000"/>
-                <!-- Leaf veins -->
-                <path d="M218,154 C207,143 199,131 196,119" stroke-width="0.9" stroke="#a02000"/>
-                <path d="M241,156 C252,145 260,133 264,121" stroke-width="0.9" stroke="#a02000"/>
-            </g>
+                <!-- Holographic foil strip — diagonal rainbow band; angle shifts with tilt via JS -->
+                <linearGradient id="holo-foil" gradientUnits="userSpaceOnUse"
+                                x1="0" y1="180" x2="720" y2="540">
+                    <stop offset="0%"   stop-color="#d4af37" stop-opacity="0.00"/>
+                    <stop offset="28%"  stop-color="#d4af37" stop-opacity="0.00"/>
+                    <stop offset="34%"  stop-color="#d4af37" stop-opacity="0.30"/>
+                    <stop offset="39%"  stop-color="#48c9b0" stop-opacity="0.26"/>
+                    <stop offset="44%"  stop-color="#c39bd3" stop-opacity="0.24"/>
+                    <stop offset="49%"  stop-color="#7fb3d3" stop-opacity="0.26"/>
+                    <stop offset="54%"  stop-color="#f9e79f" stop-opacity="0.22"/>
+                    <stop offset="60%"  stop-color="#f9e79f" stop-opacity="0.00"/>
+                    <stop offset="100%" stop-color="#f9e79f" stop-opacity="0.00"/>
+                </linearGradient>
 
-            <!-- ── Branch with buds (overflows the card edges intentionally) ── -->
-            <g stroke="#8B1800" stroke-width="1.4" fill="none" stroke-linecap="round">
-                <!-- Main branch — runs edge-to-edge and beyond -->
-                <path d="M-50,258 C10,249 70,244 120,247 C160,249 200,253 240,260
-                         C280,267 320,267 360,263 C395,259 425,263 460,267 C480,269 500,266 520,260"/>
+                <!-- Mask shine layers to the envelope's actual shape (alpha channel) -->
+                <mask id="envelope-mask" maskUnits="userSpaceOnUse" style="mask-type: alpha">
+                    <image href="{% static 'banquet/envelope.svg' %}"
+                           x="0" y="0" width="720" height="720"
+                           preserveAspectRatio="xMidYMid meet"/>
+                </mask>
 
-                <!-- Twig clusters -->
-                <!-- cluster ~x80 -->
-                <path d="M82,246 C74,232 67,219 62,208"/>
-                <path d="M82,246 C84,230 86,216 88,205"/>
-                <path d="M82,246 C88,233 94,221 98,211"/>
-                <ellipse cx="60"  cy="205" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(-16,60,205)"/>
-                <ellipse cx="87"  cy="202" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(4,87,202)"/>
-                <ellipse cx="100" cy="208" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(16,100,208)"/>
+            </defs>
 
-                <!-- cluster ~x190 -->
-                <path d="M190,251 C182,237 175,224 170,213"/>
-                <path d="M190,251 C192,235 194,221 196,210"/>
-                <path d="M190,251 C196,237 202,225 206,215"/>
-                <ellipse cx="168" cy="210" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(-13,168,210)"/>
-                <ellipse cx="195" cy="207" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(4,195,207)"/>
-                <ellipse cx="208" cy="212" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(14,208,212)"/>
+            <!-- ══════════════ ARTWORK ══════════════ -->
+            <!--
+                The user's 1024×1024 envelope/border illustration,
+                scaled to fill the 720×720 card and clipped to rounded corners.
+            -->
+            <image href="{% static 'banquet/envelope.svg' %}"
+                   x="0" y="0" width="720" height="720"
+                   preserveAspectRatio="xMidYMid meet"/>
 
-                <!-- cluster ~x320 -->
-                <path d="M320,263 C312,248 305,235 300,224"/>
-                <path d="M320,263 C321,247 322,232 323,220"/>
-                <ellipse cx="298" cy="221" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(-11,298,221)"/>
-                <ellipse cx="322" cy="217" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(3,322,217)"/>
+            <!-- ══════════════ EVENT DETAILS ══════════════ -->
 
-                <!-- cluster ~x425 -->
-                <path d="M425,265 C417,250 410,237 405,226"/>
-                <path d="M425,265 C426,249 427,234 428,222"/>
-                <ellipse cx="403" cy="223" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(-11,403,223)"/>
-                <ellipse cx="427" cy="219" rx="3"   ry="5.5" fill="#a02000" stroke="none" transform="rotate(3,427,219)"/>
-            </g>
+            <!-- Top accent rule -->
+            <line x1="180" y1="310" x2="540" y2="310"
+                  stroke="#c0b4a4" stroke-width="0.8"/>
+            <circle cx="360" cy="310" r="3.5" fill="#c0b4a4"/>
 
-            <!-- ── Lavender rectangle (event details placeholder) ── -->
-            <rect x="100" y="165" width="222" height="68"
-                  fill="#c4b0e4" rx="3" opacity="0.88"/>
+            <!-- Main script title -->
+            <text x="360" y="368" text-anchor="middle"
+                  font-family="'Great Vibes', cursive"
+                  font-size="52" fill="#2c2018">SASE Banquet</text>
 
-            <!-- ── RSVP arrow ── -->
-            <line x1="326" y1="199" x2="408" y2="199" stroke="#2a6e2a" stroke-width="2.1"/>
-            <polygon points="406,194 420,199 406,204" fill="#2a6e2a"/>
-            <text x="424" y="204" font-family="Arial, sans-serif"
-                  font-size="13" fill="#2a4a2a" font-weight="600">RSVP</text>
+            <!-- Script subtitle in dusty blue -->
+            <text x="360" y="413" text-anchor="middle"
+                  font-family="'Great Vibes', cursive"
+                  font-size="34" fill="#4a6e8a">Friendship Gardens</text>
+
+            <!-- Diamond divider -->
+            <line x1="210" y1="432" x2="346" y2="432"
+                  stroke="#c0b4a4" stroke-width="0.7"/>
+            <path d="M360,427 L366,432 L360,437 L354,432 Z" fill="#c0b4a4"/>
+            <line x1="374" y1="432" x2="510" y2="432"
+                  stroke="#c0b4a4" stroke-width="0.7"/>
+
+            <!-- Location -->
+            <text x="360" y="458" text-anchor="middle"
+                  font-family="'Cormorant Garamond', Georgia, serif"
+                  font-size="14.5" fill="#4a3828">
+                Student Pavilion · Senita Ballroom BC
+            </text>
+
+            <!-- Date + Time -->
+            <text x="360" y="482" text-anchor="middle"
+                  font-family="'Cormorant Garamond', Georgia, serif"
+                  font-size="14.5" fill="#4a3828">
+                April 18<tspan baseline-shift="super" font-size="9">th</tspan>,
+                2026 &nbsp;·&nbsp; 5:00 – 8:00 PM
+            </text>
+
+            <!-- Dress + RSVP -->
+            <text x="360" y="506" text-anchor="middle"
+                  font-family="'Cormorant Garamond', Georgia, serif"
+                  font-size="13" font-style="italic" fill="#7a6a58">
+                Semi-formal &nbsp;·&nbsp; Must RSVP
+            </text>
+
+            <!-- Bottom accent rule -->
+            <line x1="180" y1="524" x2="540" y2="524"
+                  stroke="#c0b4a4" stroke-width="0.8"/>
+            <circle cx="360" cy="524" r="3.5" fill="#c0b4a4"/>
+
+            <!-- ══════════════ SHINE LAYERS ══════════════ -->
+
+            <!-- 1. Always-on diagonal laminate sheen -->
+            <rect x="0" y="0" width="720" height="720"
+                  fill="url(#gloss-static)"
+                  mask="url(#envelope-mask)"
+                  pointer-events="none"/>
+
+            <!-- 1b. Holographic foil strip — angle shifts with card tilt via JS -->
+            <rect x="0" y="0" width="720" height="720"
+                  fill="url(#holo-foil)"
+                  mask="url(#envelope-mask)"
+                  pointer-events="none"/>
+
+            <!-- 2. Mouse-tracking radial spotlight (JS updates cx/cy) -->
+            <rect id="gloss-overlay"
+                  x="0" y="0" width="720" height="720"
+                  fill="url(#shine-radial)"
+                  mask="url(#envelope-mask)"
+                  pointer-events="none"/>
+
+            <!-- 3. Hover sweep (CSS animation) -->
+            <rect class="sweep-rect"
+                  x="0" y="0" width="720" height="720"
+                  fill="url(#sweep-grad)"
+                  mask="url(#envelope-mask)"
+                  pointer-events="none"/>
+
         </svg>
     </div><!-- /.envelope-card -->
 
-</div><!-- /.banner-wrapper -->
+    <a href="#rsvp" class="rsvp-btn">RSVP Now</a>
+
+    <div class="scroll-hint">↓ &nbsp; scroll</div>
+
+</section><!-- /#hero -->
+
+<!-- ═══════════════════════════════════════════════════════
+     INVITED SECTION
+     ═══════════════════════════════════════════════════════ -->
+<section class="invited-section" id="invited">
+<div class="invited-inner">
+
+    <div class="invited-watermark" aria-hidden="true">You Are Invited</div>
+
+    <div class="lacy-card" aria-label="You are invited">
+        <img src="{% static 'banquet/images/lacy invatation card.svg' %}"
+             alt="You Are Invited" class="lacy-img">
+    </div>
+
+    <div class="polaroid">
+            <div class="polaroid-photo"></div>
+            <p class="polaroid-cap">/ sase banquet 2026</p>
+        </div>
+
+    <div class="camera-wrap">
+        <img src="{% static 'banquet/images/camera.svg' %}"
+             alt="" class="camera-svg" aria-hidden="true">
+    </div>
+
+</div><!-- /.invited-inner -->
+</section><!-- /#invited -->
+
+<script>
+/*
+ * ENVELOPE CARD INTERACTIVITY
+ * ─────────────────────────────────────────────────────
+ *  • Mouse-tracking 3-D tilt  (rotateX / rotateY)
+ *  • Radial shine spotlight   (SVG radialGradient cx/cy)
+ *  • Dynamic shadow shift     (drop-shadow follows tilt)
+ *  • Smooth return on leave   (CSS transition re-enabled)
+ */
+(function () {
+    const card  = document.getElementById('envelopeCard');
+    const shine = document.getElementById('shine-radial');
+    const foil  = document.getElementById('holo-foil');
+
+    const REST_TRANSFORM =
+        'perspective(1100px) rotateX(5deg) rotateY(-8deg) rotateZ(-1deg)';
+    const REST_FILTER =
+        'drop-shadow(18px 26px 40px rgba(60,40,20,0.22)) ' +
+        'drop-shadow(4px  8px  14px rgba(60,40,20,0.13))';
+    const SLOW_TRANSITION =
+        'transform 0.55s cubic-bezier(0.25,0.8,0.25,1), filter 0.55s ease';
+
+    card.addEventListener('mouseenter', function () {
+        card.style.transition = 'filter 0.12s ease';
+    });
+
+    card.addEventListener('mousemove', function (e) {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top)  / r.height;
+
+        const rX = (5  + (y - 0.5) * -12).toFixed(1);
+        const rY = (-8 + (x - 0.5) *  20).toFixed(1);
+
+        card.style.transform =
+            `perspective(1100px) rotateX(${rX}deg) rotateY(${rY}deg) rotateZ(-1deg)`;
+
+        shine.setAttribute('cx', (x * 100).toFixed(1) + '%');
+        shine.setAttribute('cy', (y * 100).toFixed(1) + '%');
+
+        /* Rotate holographic foil gradient angle with card tilt */
+        const tilt = (45 + parseFloat(rY) * 1.8 + parseFloat(rX) * 0.6) * Math.PI / 180;
+        const r2 = 390;
+        foil.setAttribute('x1', (360 - r2 * Math.cos(tilt)).toFixed(0));
+        foil.setAttribute('y1', (360 + r2 * Math.sin(tilt)).toFixed(0));
+        foil.setAttribute('x2', (360 + r2 * Math.cos(tilt)).toFixed(0));
+        foil.setAttribute('y2', (360 - r2 * Math.sin(tilt)).toFixed(0));
+
+        const sX = (8  + x * 20).toFixed(0);
+        const sY = (14 + y * 18).toFixed(0);
+        card.style.filter =
+            `drop-shadow(${sX}px ${sY}px 38px rgba(60,40,20,0.25)) ` +
+            `drop-shadow(3px 6px 12px rgba(60,40,20,0.13))`;
+    });
+
+    card.addEventListener('mouseleave', function () {
+        card.style.transition = SLOW_TRANSITION;
+        card.style.transform  = REST_TRANSFORM;
+        card.style.filter     = REST_FILTER;
+        shine.setAttribute('cx', '50%');
+        shine.setAttribute('cy', '50%');
+        foil.setAttribute('x1', '0');
+        foil.setAttribute('y1', '180');
+        foil.setAttribute('x2', '720');
+        foil.setAttribute('y2', '540');
+    });
+}());
+
+/*
+ * INVITED SECTION — depth parallax
+ * Elements are visible immediately. As you scroll through the section
+ * each layer drifts at a different speed, creating depth:
+ *   BG (lacy card + watermark) → barely moves  → feels far/still
+ *   FG (polaroid + camera)     → drifts faster → feels close
+ */
+(function () {
+    const section   = document.getElementById('invited');
+    if (!section) return;
+
+    const watermark = section.querySelector('.invited-watermark');
+    const lacy      = section.querySelector('.lacy-card');
+    const polaroid  = section.querySelector('.polaroid');
+    const camera    = section.querySelector('.camera-wrap');
+
+    let rafId = null;
+
+    function update() {
+        rafId = null;
+        const scrolled = Math.max(0, -section.getBoundingClientRect().top);
+
+        /* BG layer — 12% of scroll speed (nearly stationary) */
+        const bgY = -(scrolled * 0.12);
+        watermark.style.transform = `translate3d(-50%, calc(-50% + ${bgY.toFixed(1)}px), 0)`;
+        lacy.style.transform      = `translate3d(-60%, calc(-50% + ${bgY.toFixed(1)}px), 0)`;
+
+        /* FG layer — 40% of scroll speed (drifts upward noticeably) */
+        const polY = -(scrolled * 0.40);
+        polaroid.style.transform  = `translate3d(0, calc(-46% + ${polY.toFixed(1)}px), 0) rotate(-5deg)`;
+        camera.style.transform    = `translate3d(0, calc(-50% + ${polY.toFixed(1)}px), 0) rotate(5deg)`;
+    }
+
+    function onScroll() {
+        if (!rafId) rafId = requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+}());
+
+</script>
+
 </body>
 </html>
