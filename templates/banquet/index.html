@@ -268,9 +268,52 @@
             .polaroid    { left: 5%; top: 30%; }
             .camera-wrap { right: 4%; top: 68%; }
         }
+
+        /* ═══════════════════════════
+           FLOWER PETALS OVERLAY
+           ═══════════════════════════ */
+        #petal-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            top: -60px;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: petalFall linear infinite;
+        }
+
+        @keyframes petalFall {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            5% {
+                opacity: 0.85;
+            }
+            80% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(105vh) translateX(var(--drift)) rotate(var(--spin));
+            }
+        }
     </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOWER PETAL CANVAS (fixed, spans all sections)
+     ═══════════════════════════════════════════════════════ -->
+<div id="petal-canvas" aria-hidden="true"></div>
 
 <!-- ═══════════════════════════════════════════════════════
      HERO SECTION
@@ -571,6 +614,96 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     update();
+}());
+
+/*
+ * FLOWER PETAL RAIN
+ * ─────────────────────────────────────────────────────
+ * Creates SVG cherry-blossom petals that drift down
+ * across the entire page continuously, at all scroll depths.
+ */
+(function () {
+    const canvas = document.getElementById('petal-canvas');
+    if (!canvas) return;
+
+    /* Single petal SVG shape (5-petal blossom, drawn at ~24×24 units) */
+    function petalSVG(fill, stroke, size) {
+        const s = size;
+        // One rounded teardrop petal pointing up, then rotated 5× for a blossom
+        const petal = `M0,0 C${s*0.18},${-s*0.55} ${s*0.45},${-s*0.9} 0,${-s}
+                        C${-s*0.45},${-s*0.9} ${-s*0.18},${-s*0.55} 0,0`;
+        let paths = '';
+        for (let i = 0; i < 5; i++) {
+            paths += `<path d="${petal}" transform="rotate(${i * 72})" fill="${fill}" stroke="${stroke}" stroke-width="0.5" opacity="0.9"/>`;
+        }
+        // Small center circle
+        const dim = s * 2.2;
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="${dim}" height="${dim}"
+                     viewBox="${-s*1.1} ${-s*1.1} ${dim} ${dim}">
+                    <g transform="translate(0,${s*0.2})">${paths}</g>
+                    <circle cx="0" cy="${s*0.2}" r="${s*0.12}" fill="#f9d5e0" opacity="0.9"/>
+                </svg>`;
+    }
+
+    const PALETTES = [
+        { fill: '#f7c5d5', stroke: '#e89ab8' },  // soft pink
+        { fill: '#fad4e0', stroke: '#f0aac8' },  // blush
+        { fill: '#fce0ec', stroke: '#e8b4cc' },  // pale rose
+        { fill: '#f5b8cc', stroke: '#dd88a8' },  // medium pink
+        { fill: '#fff0f5', stroke: '#f0c0d8' },  // near-white pink
+    ];
+
+    const PETAL_COUNT = 22;
+
+    function randomBetween(a, b) { return a + Math.random() * (b - a); }
+
+    function createPetal() {
+        const el = document.createElement('div');
+        el.className = 'petal';
+
+        const palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+        const size    = randomBetween(7, 14);        // petal arm length in px
+        const dur     = randomBetween(7, 18);        // seconds to fall
+        const delay   = randomBetween(0, dur);       // stagger start
+        const leftPct = randomBetween(0, 100);       // horizontal start %
+        const drift   = randomBetween(-120, 120);    // horizontal drift px
+        const spin    = randomBetween(120, 600) * (Math.random() > 0.5 ? 1 : -1);
+
+        el.style.cssText = `
+            left: ${leftPct}%;
+            animation-duration: ${dur}s;
+            animation-delay: ${-delay}s;
+            --drift: ${drift}px;
+            --spin:  ${spin}deg;
+        `;
+        el.innerHTML = petalSVG(palette.fill, palette.stroke, size);
+
+        return el;
+    }
+
+    /* Spawn all petals */
+    for (let i = 0; i < PETAL_COUNT; i++) {
+        canvas.appendChild(createPetal());
+    }
+
+    /* Recycle petals: once the CSS animation ends, re-randomise and restart */
+    canvas.addEventListener('animationiteration', function (e) {
+        const el = e.target.closest('.petal');
+        if (!el) return;
+
+        const palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+        const size    = randomBetween(7, 14);
+        const dur     = randomBetween(7, 18);
+        const leftPct = randomBetween(0, 100);
+        const drift   = randomBetween(-120, 120);
+        const spin    = randomBetween(120, 600) * (Math.random() > 0.5 ? 1 : -1);
+
+        el.style.left             = leftPct + '%';
+        el.style.animationDuration = dur + 's';
+        el.style.setProperty('--drift', drift + 'px');
+        el.style.setProperty('--spin',  spin  + 'deg');
+        el.innerHTML = petalSVG(palette.fill, palette.stroke, size);
+    });
 }());
 
 </script>
