@@ -268,6 +268,22 @@
             .polaroid    { left: 5%; top: 30%; }
             .camera-wrap { right: 4%; top: 68%; }
         }
+
+        /* ═══════════════════════════
+           BLUE KNOT DIVIDER
+           ═══════════════════════════ */
+        .knot-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 52px 0 44px;
+            background: #f0ece3;
+        }
+        .knot-svg {
+            width: 68px;
+            height: auto;
+            opacity: 0.88;
+        }
     </style>
 </head>
 <body>
@@ -436,6 +452,43 @@
     <div class="scroll-hint">↓ &nbsp; scroll</div>
 
 </section><!-- /#hero -->
+
+<!-- ════════════════ BLUE KNOT DIVIDER ════════════════ -->
+<div class="knot-divider" aria-hidden="true">
+    <svg class="knot-svg" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- Loops and central diamond knot body -->
+        <g fill="rgba(74,110,138,0.10)" stroke="#4a6e8a" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+            <!-- Top loop -->
+            <path d="M42,50 C40,28 60,28 58,50"/>
+            <!-- Right loop -->
+            <path d="M64,57 C86,49 86,79 64,71"/>
+            <!-- Left loop -->
+            <path d="M36,57 C14,49 14,79 36,71"/>
+            <!-- Central diamond (woven body) -->
+            <path d="M50,46 L67,63 L50,80 L33,63 Z"/>
+            <!-- Bottom oval connecting to tassels -->
+            <path d="M43,78 C40,97 60,97 57,78"/>
+        </g>
+        <!-- Tassel cords -->
+        <g stroke="#4a6e8a" stroke-width="1.8" stroke-linecap="round" fill="none">
+            <line x1="47" y1="97" x2="44" y2="126"/>
+            <line x1="53" y1="97" x2="56" y2="126"/>
+            <!-- Tassel crossbar -->
+            <line x1="38" y1="126" x2="50" y2="126"/>
+            <line x1="50" y1="126" x2="62" y2="126"/>
+            <!-- Tassel fringe -->
+            <line x1="38" y1="126" x2="37" y2="135"/>
+            <line x1="41" y1="126" x2="40" y2="138"/>
+            <line x1="44" y1="126" x2="43" y2="136"/>
+            <line x1="47" y1="126" x2="46" y2="137"/>
+            <line x1="53" y1="126" x2="52" y2="137"/>
+            <line x1="56" y1="126" x2="55" y2="136"/>
+            <line x1="59" y1="126" x2="58" y2="138"/>
+            <line x1="62" y1="126" x2="61" y2="135"/>
+        </g>
+    </svg>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════
      INVITED SECTION
