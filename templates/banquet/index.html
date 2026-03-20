@@ -165,6 +165,18 @@
             background: #f0ece3;
         }
 
+        .invited-illustration {
+            position: absolute;
+            inset: 0;
+            background:
+                url("{% static 'banquet/images/page2.png' %}")
+                center center / 90% auto no-repeat;
+            mix-blend-mode: multiply;
+            opacity: 0.90;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .invited-inner::before {
             content: '';
             position: absolute;
@@ -443,6 +455,7 @@
 <section class="invited-section" id="invited">
 <div class="invited-inner">
 
+    <div class="invited-illustration" aria-hidden="true"></div>
     <div class="invited-watermark" aria-hidden="true">You Are Invited</div>
 
     <div class="lacy-card" aria-label="You are invited">
