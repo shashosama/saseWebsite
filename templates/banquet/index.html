@@ -207,6 +207,15 @@
             height: auto;
             display: block;
         }
+        .lacy-overlay {
+            position: absolute;
+            top: 7%;
+            left: 7%;
+            width: 86%;
+            height: 86%;
+            object-fit: cover;
+            z-index: 2;
+        }
 
         /* ── Polaroid  (RIGHT, in front of camera) ── */
         .polaroid {
@@ -448,6 +457,8 @@
     <div class="lacy-card" aria-label="You are invited">
         <img src="{% static 'banquet/images/lacy invatation card.svg' %}"
              alt="You Are Invited" class="lacy-img">
+        <img src="{% static 'banquet/images/page1.svg' %}"
+             alt="" class="lacy-overlay" aria-hidden="true">
     </div>
 
     <div class="polaroid">
